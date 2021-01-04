@@ -21,11 +21,11 @@ def combination_lock
         puts "You can guess the combination or examine the room for the 3- digit code"
         puts "What do you want to do?"
         print "> "
-        input = gets.chomp
+        input = gets.chomp.downcase
         if input.include? "guess"
             puts "Enter three numbers for your guess"
             print "> "
-            code_guess = gets.chomp.to_i
+            code_guess = gets.chomp.downcase.to_i
 
             if code_guess == code
                 locked = false
@@ -57,7 +57,7 @@ def clown_room_with_mirror
     puts "You have to think of something to do, quick!"
     puts "What could you do"
     print "> "
-    input = gets.chomp
+    input = gets.chomp.downcase
 
     if input.include?("stab") || input.include?("sword")
         puts "In your haste to get out of the last room, you left your sword behind"
@@ -88,7 +88,7 @@ def troll_room_two
     puts "Not sure what that means, you turn around and see a door that was behind the bear. You hadn't noticed this door before."
     puts "Do you want to go through the door? (yes/no)"
     print "> "
-    door_choice = gets.chomp
+    door_choice = gets.chomp.downcase
 
     if door_choice == "yes"
         clown_room_with_mirror
@@ -105,27 +105,31 @@ def troll_room
     chances = 2
     
     puts ""
-    puts "******** Troll ROOM ********"
-    puts ""
     puts "You enter the room and are face to face with a troll"
+    puts ""
     puts "Troll: How did you get in here?"
     puts ""
-    puts "No worries, I'm hungry and you look delicious"
+    puts "       No worries, I'm hungry and you look delicious!"
+    puts "       The beast dragged a little snack through her a"
+    puts "       little while ago, but it wouldn't even share an leg."
     puts ""
-    puts "I'll tell you what, if you can guess the number"
-    puts "I'm thinking of then I will let you pass into the next room"
-    puts "But if you can't guess the number the I'm going to eat you"
+    puts "       . . . but I'm also bored."
+    puts ""
+    puts "       I'll tell you what, if you can guess the number"
+    puts "       I'm thinking of then I will let you pass into the next room."
+    puts "       But if you can't guess the number then I'm going to eat you."
     puts ""
     
-    while chances > 0
-        puts "Do you want to play?"
+    while true
+        puts "Do you want to play? (y/n)"
         print "> "
-        play_game = gets.chomp
+        play_game = gets.chomp.downcase
+        puts ""
 
-        if play_game == "yes"
+        if play_game.include?("yes") || play_game.include?("y")
             
             puts "Great! Let's play"
-            # puts "troll number is #{troll_number}"
+            puts "troll number is #{troll_number}"
 
             while tries > 0 && player_guess != troll_number
                 puts "You have #{tries} tries to guess the number between 1-100"
@@ -147,7 +151,7 @@ def troll_room
                     puts ""
                     puts "Would you like to go to the next room? (yes/no)"
                     print "> "
-                    choice = gets.chomp
+                    choice = gets.chomp.downcase
                     if choice == "yes" || choice == "y"
                         puts ""
                         puts "As you walk toward the door,"
@@ -155,6 +159,9 @@ def troll_room
                         puts 'It reads, "smokey"'
                         puts ""
                         puts "...This cave is really weird..."
+                        puts ""
+                        print "[hit enter to continue]"
+                        gets.chomp.downcase
                         puts ""
                         bear_room
                     else
@@ -167,17 +174,21 @@ def troll_room
                     dead("You didn't guess the correct number so the troll ate you in one bite")
                 end
             end
-        elsif play_game == "no"
+        elsif play_game.include?("no") || play_game.include?("n")
             chances -= 1
-            puts chances
-            puts "What!? No one has every refused to play my game."
-            puts "I'll ask you one more time."
-            puts "Choose your answer wisely."
-
-            
+            if chances > 0
+                puts "What!? No one has every refused to play my game."
+                puts "I'll ask you one more time."
+                puts "Choose your answer wisely."
+                puts ""
+            else
+                dead("The troll did not appreciate you refusing his game offer. He ate you in one bite!")
+            end
+        else
+            puts "I don't understand what you want to do."
+            puts ""
         end
     end
-    dead("The troll did not appreciate you refusing his game offer. He ate you in one bite!")
 end
 
 def bear_room
@@ -196,17 +207,27 @@ def bear_room
     bear_attack_hitpoints = 100
 
     puts ""
-    puts "******** BEAR ROOM ********"
-    puts ""
     puts "Oh no!"
     puts "You've entered a room with a sleeping bear"
     puts "...and the troll shut and locked the door behind you!"
     puts ""
-    puts "You look around the room and see the bones of someone" 
-    puts "who must have come into this room before you."
+    puts "You look to your left and see a sconce, so you quietly place" 
+    puts "your torch in it."
     puts ""
-    puts "You also see a sword next to the bones and it"
-    puts "looks like there is something under the bones"
+    puts "You look around the room and see the bones of a person."
+    puts "Filled with fear, you think that the bear was the beast"
+    puts "that the troll was talking about and that it had already"
+    puts "eaten your friend."
+    puts "" 
+    puts "But as you look more closely, you also see a sword next" 
+    puts "to the bones."
+    puts "Your friend didn't have a sword . . . this must had been someone else."
+    puts ""
+    puts "But you keep staring at the bones. It looks like there"
+    puts "is something under the them."
+    puts ""
+    print "[hit enter to continue]"
+    gets.chomp
     puts ""
     
     while attack == false
@@ -218,24 +239,28 @@ def bear_room
 
         puts "What do you want to do"
         print "> "
-        fight_prep_choice = gets.chomp
+        fight_prep_choice = gets.chomp.downcase
         
         if fight_prep_choice.include?("sword") || fight_prep_choice.include?("weapon")
             sword = true
             puts "You successfuly grabbed the sword"
             puts "You have increased your attacking power by 50%"
             puts "The bear is still asleep"
+            puts ""
         elsif fight_prep_choice.include?("bones") || fight_prep_choice.include?("search")
             possess_defense_potion = true
             possess_life_potion = true
             sword = false
             puts "You search the bones and discover two potions."
-            puts 'The label on one of the bottles read, "potion to increase defense"'
-            puts "There is a label on the other bottle but it's hard to read."
-            puts "Wonder what this one does..."
+            puts 'The label on one of the bottles reads, "potion to increase defense"'
+            puts 'The other bottle reads, "potion to restore life"'
+            puts "Luckily the bear did not hear you rummaging through the bones"
+            puts ""
         elsif fight_prep_choice.include?("drink") || fight_prep_choice.include?("potion")
             puts "You shouldn't drink this yet"
-        elsif fight_prep_choice.include?("bear") || fight_prep_choice.include?("attack")
+            puts ""
+        elsif fight_prep_choice.include?("bear") || fight_prep_choice.include?("attack") || fight_prep_choice.include?("fight")
+            puts ""
             attack = true
         else
             puts "I don't understand what you want to do."
@@ -260,48 +285,49 @@ def bear_room
             puts "You prepare to fight the bear."
             puts "What do you want to do?"
             print "> "
-            action = gets.chomp
+            action = gets.chomp.downcase
+            puts ""
             if action == "defense"
                 if possess_defense_potion == true
                     taken_defense_potion = true
                     possess_defense_potion = false
                     puts ""
                     puts "You drink the defense potion."
-                    puts "Your defense is increased by 25%"
+                    puts "Your defense is increased by 25%."
                     puts ""
                 else
                     taken_defense_potion = false
                     puts ""
-                    puts "You already drank the defense potion"
+                    puts "You already drank the defense potion."
                     puts ""
                 end
             
-            elsif action.include?("other") || action.include?("life")
+            elsif action.include?("restore") || action.include?("life")
                 if possess_life_potion == true
                     taken_life_potion = true
                     possess_life_potion = false
                     taken_defense_potion = false
                     puts ""
-                    puts "You drink the other potion"
-                    puts "You feel stronger, like your life has been restored"
+                    puts "You drink the life potion and your life is"
+                    puts "restored to full health."
                     puts ""
                 else
                     taken_life_potion = false
                     puts ""
-                    puts "You already drank the life potion"
+                    puts "You already drank the life potion."
                     puts ""
                 end
 
             elsif action.include?("sword") || action.include?("weapon")
                 sword = false
                 puts "When you run to get the sword the bear"
-                dead("jumps in front of you and kills you.")
+                dead("jumps in front of you and kills you. Should have grabbed the sword when the bear was asleep.")
 
             elsif action.include?("bones") || action.include?("search")
                 puts "When you run to get the sword the bear"
-                dead("jumps in front of you and kills you.")
+                dead("jumps in front of you and kills you. Should hav searched the bones when the bear was asleep.")
 
-            elsif action.include?("attack") || action.include?("bear")
+            elsif action.include?("attack") || action.include?("bear") || action.include?("fight")
                 taken_defense_potion = false
                 player_attack = rand(player_attack_hitpoints)
                 new_bear_life = bear_life - player_attack
@@ -339,7 +365,7 @@ def bear_room
         puts "You think about letting the troll know about all this meat"
         puts "Do you want to let the troll know? (yes/no)"
         print "> "
-        feed_troll = gets.chomp
+        feed_troll = gets.chomp.downcase
 
         if feed_troll == "yes"
             troll_room_two
@@ -347,7 +373,7 @@ def bear_room
             puts "Now that you have had time to rest from that fight, you notice that there was a door behind the bear"
             puts "Do you want to go through the door? (yes/no)"
             print "> "
-            door_choice = gets.chomp
+            door_choice = gets.chomp.downcase
 
             if door_choice == "yes"
                 clown_room_no_mirror
@@ -359,34 +385,85 @@ def bear_room
 end
 
 def cave_entrance
-    puts "Inside you see a door in front of you."
-    puts "You also notice a pile of rocks in a corner of the room"
+    puts ""
+    puts ""
+    puts "You are now alone standing in front of the cave."
+    puts ""
+    puts "You've yelled into the cave for your friend but nothing."
+    puts "You sturggle to see anything inside but you know you can't"
+    puts "go home without them. You have no option . . ."
+    puts ""
+    print "[hit enter to continue]"
+    gets.chomp
+    puts ""
+    puts ". . . you decide to go inside to find your friend."
+    puts ""
+    puts "It's much colder inside the cave. There is some light"
+    puts "shinning in from the opening but not enough to see anything."
+    puts ""
+    puts "You scoot your feet around, careful not to trip and fall."
+    puts "You feel something against your foot. Scared to find out what"
+    puts "it is, you slowly bend down to feel for it."
+    puts ""
+    print "[hit enter to continue]"
+    gets.chomp
+    puts ""
+    puts "You're now holding your friends shoe."
+    puts ""
+    puts "You keep searching for more. You bump into the wall and" 
+    puts "your hand touches something. . ."
+    puts ""
+    print "[hit enter to continue]"
+    gets.chomp
+    puts ""
+    puts ". . . it's a torch sitting in it's sconce!"
+    puts ""
+    puts "If there is a torch, there must be something to light it with, right?"
+    puts ""
+    puts "You keep searching and you find some matches on the ground."
+    puts ""
+    puts "You quickly light the torch."
+    puts ""
+    print "[hit enter to continue]"
+    gets.chomp
+    puts ""
+    puts "You now see a door in front of you and a pile of rocks" 
+    puts "in the corner."
+    puts ""
     puts "What would you like to do?"
     
     key = 0
     door_locked = true
+    counter = 0
     
     while true
+        if counter > 0
+            puts ""
+            puts "What would you like to do now?"
+        end
+        
         print "> "
-        choice = gets.chomp
-
+        choice = gets.chomp.downcase
+        puts ""
+        counter += 1
         if key > 0
             door_locked = false
         end
 
         if choice.include?("rocks") || choice.include?("rock")
             puts "You search the pile of rocks and find a key"
+            puts ""
             puts "What would you like to do?"
             
 
             while key == 0
                 print "> "
-                key_choice = gets.chomp
+                key_choice = gets.chomp.downcase
                 if key_choice.include?("pick") || key_choice.include?("key")
+                    puts ""
                     puts "You pick up the key and put it in your pocket"
                     key += 1
                     puts "You now have #{key} key"
-                    puts "Now what would you like to do?"
                 else
                     puts "Wait, don't you want to pick up the key?"
                 end
@@ -396,12 +473,17 @@ def cave_entrance
         elsif choice.include?("door") && !door_locked
             puts "--------------------------------------"
             puts ""
-            puts "You have unlocked the door and as you go through it"
-            puts "you notice some writing on the wall"
+            puts "You grab the torch and head to the door."
+            puts "You unlock the door and as you go through it"
+            puts "you notice some writing above it."
             puts 'It reads, "stinky"'
+            puts ""
             puts "... weird ..."
             puts ""
             puts "--------------------------------------"
+            puts ""
+            print "[hit enter to continue]"
+            gets.chomp
             puts ""
             troll_room
         else
@@ -411,16 +493,53 @@ def cave_entrance
     end
 end
 
+def story
+    puts "You and a friend are exploring the woods in the country."
+    puts "You've never been this far out into the woods and the sun"
+    puts "looks like it's about to go down. Before you can say that" 
+    puts "maybe you two should head back to the house, your friend" 
+    puts "discovers a cave hidden behind some brush. You both try to look" 
+    puts "inside the cave but it's too dark to see anything. Your" 
+    puts "friend wants to go inside to check it out but you are not" 
+    puts "interested in that. Your friend goes in by themself..."
+    puts ""
+    print "[hit enter to continue]"
+    puts ""
+    gets.chomp
+    puts ". . ."
+    puts ""
+    print "[hit enter to continue]"
+    puts ""
+    gets.chomp
+    puts ""
+    puts ". . . ."
+    puts ""
+    puts ""
+    print "[hit enter to continue]"
+    gets.chomp
+    cave_entrance
+end
+
 def dead(reason)
     puts reason
     puts "You are now dead. Thanks for playing!"
-    exit(0)
+    puts ""
+    puts "Do you want to play again? (y/n)"
+    print "> "
+    input = gets.chomp.downcase
+    if input == "y"
+        password_prompt
+    elsif input == "n"
+        exit(0)
+    else
+        puts "I don't understand what you want to do."
+    end
 end
 
 def password_entry
     puts "enter your password"
     print "> "
-    input = gets.chomp
+    input = gets.chomp.downcase
 
     if input == "pennywise"
         clown_room_with_mirror
@@ -433,32 +552,52 @@ def password_entry
     end
 end
 
-def start
-    puts "Welcome to the maze!"
+def get_name
+    puts ""
+    puts "           ~~~~~~~~~~~~~~~~~~~~"
+    puts "         ~~~                  ~~~"
+    puts "       ~~                       ~~"
+    puts "     /                            \\"
+    puts "    /                              \\"
+    puts "   /                                \\"
+    puts "  |                                  |"
+    puts " |                                    |"
+    puts "|                                      |"
+    puts "* * * * * WELCOME TO THE CAVE! * * * * *"
+    puts ""
     puts "What is your name?"
     print "> "
     name = gets.chomp
-    puts "Hello #{name}" 
+    puts ""
+    puts "Hello #{name}"
+    puts ""
+    password_prompt
+end
 
-    puts "Do you have a password? (yes/no)"
+def password_prompt
+    puts ""
+    puts "Do you have a password? (y/n)"
     print "> "
-    password_choice = gets.chomp
+    password_choice = gets.chomp.downcase
 
-    if password_choice == "yes"
+    if password_choice.include?("yes") || password_choice.include?("y")
         password_entry
+    elsif password_choice.include?("no") || password_choice.include?("n")
+        puts ""
+        puts "That's okay. Pay attention during the game for" 
+        puts "words that seem strange. They might come in handy later."
+        puts ""
+        print "[hit enter to continue]"
+        gets.chomp.downcase
+        puts ""
+        puts ""
+        puts ""
+        puts ""
+        story
     else
-        puts "You are standing in front of a cave. You decide to go inside to look around?"
-        cave_entrance
+        puts "I don't understand. Please try again"
     end
 end
 
-# def test
-#     player_attack = 50
-#     old_random = rand(player_attack)
-#     puts "Old Random: #{old_random}"
-#     player_attack = player_attack * 0.5 + player_attack
-#     puts "new player attack num: #{player_attack}"
-#     puts "new random: #{new"
-# end
 
-start
+get_name
